@@ -28,7 +28,7 @@ class LojaProdutoStoreRequest extends FormRequest
         return [
             'nome' => ['required', 'max:60', 'min:3'],
             'valor' => ['required', 'integer', 'max:999999', 'min:10'],
-            'loja_id' => ['required', 'exists:lojas'],
+            'loja_id' => ['required', 'exists:lojas,id'],
             'ativo' => ['required', 'boolean'],
         ];
     }
