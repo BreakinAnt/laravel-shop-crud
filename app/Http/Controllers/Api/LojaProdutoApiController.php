@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LojaProduto\LojaProdutoDeleteRequest;
 use App\Http\Requests\LojaProduto\LojaProdutoStoreRequest;
 use App\Http\Requests\LojaProduto\LojaProdutoUpdateRequest;
+use App\Mail\LojaProduto\LojaProdutoStatusMail;
 use App\Models\LojaProduto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class LojaProdutoApiController extends Controller
 {
@@ -24,13 +26,22 @@ class LojaProdutoApiController extends Controller
     public function store(LojaProdutoStoreRequest $req)
     {
         $produto = LojaProduto::create($req->all());
+        $loja = $produto->loja;
+
+        Mail::to($loja->email)
+        ->send(new LojaProdutoStatusMail($produto, $loja));
 
         return $produto;
     }
 
-    public function update(LojaProduto $produto, LojaProdutoUpdateRequest $req)
+    public function update(LojaProdutoUpdateRequest $req)
     {
-        $produto = $produto->update($req->all());
+        $produto = LojaProduto::find($req->id);
+        $produto->update($req->all());
+        $loja = $produto->loja;
+
+        Mail::to($loja->email)
+        ->send(new LojaProdutoStatusMail($produto, $loja));
 
         return $produto;
     }
