@@ -13,7 +13,7 @@ class LojaProduto extends Model
     use SoftDeletes;
 
     protected $fillable = ['nome', 'valor', 'loja_id', 'ativo'];
-    protected $hidden = ['ativo', 'created_at', 'updated_at', 'deleted_at'];
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     public function getValorAttribute()
     {

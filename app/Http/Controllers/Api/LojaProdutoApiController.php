@@ -8,14 +8,18 @@ use App\Http\Requests\LojaProduto\LojaProdutoStoreRequest;
 use App\Http\Requests\LojaProduto\LojaProdutoUpdateRequest;
 use App\Mail\LojaProduto\LojaProdutoStatusMail;
 use App\Models\LojaProduto;
+use App\Repositories\LojaProdutoRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class LojaProdutoApiController extends Controller
 {
-    public function index()
+    public function index(LojaProdutoRepository $produto, Request $req)
     {
-        return LojaProduto::where('ativo', 1)->get();
+        if($req->ativo == 1){
+            return $produto->whereAtivo()->get();
+        }
+        return $produto->all();
     }
 
     public function show(LojaProduto $produto)

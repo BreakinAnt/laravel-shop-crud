@@ -8,18 +8,20 @@ use App\Http\Requests\Loja\LojaStoreRequest;
 use App\Http\Requests\Loja\LojaUpdateRequest;
 use App\Mail\Loja\LojaStatusMail;
 use App\Models\Loja;
+use App\Repositories\LojaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class LojaApiController extends Controller
 {
-    public function index()
+    public function index(LojaRepository $loja)
     {
-        return Loja::with('produtos')->get();
+        return $loja->withProdutos()->get();
     }
 
     public function show(Loja $loja)
     {
+        $loja = Loja::with('produtos')->find($loja->id);
         return $loja;
     }
 
