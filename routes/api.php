@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LojaProdutoApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('loja-produtos')->name('api.loja-produto.')->group(function () {
+    Route::get('/', [LojaProdutoApiController::class, 'index'])->name('index');
+    Route::get('/{produto}', [LojaProdutoApiController::class, 'show'])->name('show');
+    Route::post('/', [LojaProdutoApiController::class, 'store'])->name('store');
+    Route::put('/', [LojaProdutoApiController::class, 'update'])->name('update');
+    Route::delete('/', [LojaProdutoApiController::class, 'delete'])->name('delete');
 });
